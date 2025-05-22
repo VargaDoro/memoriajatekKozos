@@ -2,7 +2,7 @@ export default class Kartya {
   #fajlNev = "";
   #id;
   #allapot = false; //false-nincs felfodítva / true-fel van fordítva
-  #blokkolt;
+  #blokkolt = false; //ha true nem lehet rányomni / false rá lehet nyomni
   #divElem;
   #imgElem;
   constructor(id, fajlNev, szuloElem) {
@@ -21,21 +21,31 @@ export default class Kartya {
   }
 
   setAllapot() {
-    this.#allapot = true;
+    this.#allapot = !this.#allapot;
     this.setLap();
   }
 
   setLap() {
     /* modositja a kep src attributumat */
-    this.#imgElem.src = this.#fajlNev;
+    if (this.#allapot) {
+      this.#imgElem.src = this.#fajlNev;
+    } else {
+      this.#imgElem.src = "kepek/hatter.jpg";
+    }
   }
 
   #kattintasTrigger() {
     this.#imgElem = document.querySelector(".kartya:last-child img");
     this.#imgElem.addEventListener("click", () => {
-      const e = new CustomEvent("fordit", { detail: this });
-      window.dispatchEvent(e);
-      this.setAllapot();
+      if (!this.#blokkolt) {
+        const e = new CustomEvent("fordit", { detail: this });
+        window.dispatchEvent(e);
+        this.setAllapot();
+      }
     });
+  }
+
+  getFajlNev() {
+    return this.#fajlNev;
   }
 }
