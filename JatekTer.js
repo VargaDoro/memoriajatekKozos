@@ -9,9 +9,15 @@ export default class JatekTer {
     this.#init();
   }
   #init() {
+    this.#kever();
     this.#kartyaLista.forEach((elem, index) => {
       //elem == this.#kartyaLista[index]
       const kartya = new Kartya(index, elem, this.#szuloElem);
+    });
+  }
+  #kever() {
+    this.#kartyaLista.sort(() => {
+      return Math.random() - 0.5;
     });
   }
 }
