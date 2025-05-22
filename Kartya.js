@@ -11,6 +11,12 @@ export default class Kartya {
     this.#divElem = szuloElem;
     this.#megjelenit();
     this.#kattintasTrigger();
+    window.addEventListener("gameBlocked", () => {
+      this.#blokkolt = true;
+    });
+    window.addEventListener("gameUnBlocked", () => {
+        this.#blokkolt = false;
+      });
   }
   #megjelenit() {
     /* egy kártya megjelenítése */

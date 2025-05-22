@@ -32,22 +32,36 @@ export default class JatekTer {
         this.#kivalasztottKartyaLista.push(event.detail);
       }
       if (this.#kivalasztottKartyaLista.length === 2) {
+        this.#triggerBlocked();
         /* össze kell hasonítani a két elem fajl nevét, kiüríteni a listát, visszafordítani a kártyákat */
         let f1 = this.#kivalasztottKartyaLista[0];
         let f2 = this.#kivalasztottKartyaLista[1];
         if (f1.getFajlNev() === f2.getFajlNev()) {
           console.log("PÁR");
+          this.#triggerUnBlocked()
         } else {
           console.log("NEM");
           /* visszafordítjuk a kártyákat */
-          setTimeout(()=> {
+          setTimeout(() => {
             f1.setAllapot();
             f2.setAllapot();
+            this.#triggerUnBlocked()
           }, 2000);
         }
         this.#kivalasztottKartyaLista.splice(0);
       }
       console.log(this.#kivalasztottKartyaLista);
     });
+  }
+
+  #triggerBlocked() {
+    /* létrehoz egy 'gameBlocked' eseményt, amire fel tud iratkozni a kártya */
+    const e = new CustomEvent("gameBlocked");
+    window.dispatchEvent(e);
+  }
+
+  #triggerUnBlocked(){
+    const e = new CustomEvent("gameUnBlocked");
+    window.dispatchEvent(e);
   }
 }
